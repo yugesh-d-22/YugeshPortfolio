@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yugesh — Designer & Photographer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --white: #f8f6f1;
+    --gray-100: #e8e5de;
+    --gray-200: #c9c5bc;
+    --gray-400: #8a8680;
+    --gray-600: #4a4744;
+    --accent: #0a0a0a;
+    --font-display: 'Playfair Display', serif;
+    --font-sans: 'Syne', sans-serif;
+    --font-mono: 'DM Mono', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--white);
+    color: var(--black);
+    font-family: var(--font-sans);
+    overflow-x: hidden;
+  }
+
+  /* Nav */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 2rem 4rem;
+    mix-blend-mode: difference;
+  }
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 900;
+    color: var(--white);
+    text-decoration: none;
+    letter-spacing: -0.03em;
+  }
+  .nav-links {
+    display: flex; gap: 2.5rem; list-style: none;
+  }
+  .nav-links a {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 400;
+    color: var(--white);
+    text-decoration: none;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute; bottom: -3px; left: 0; right: 100%;
+    height: 1px; background: var(--white);
+    transition: right 0.3s ease;
+  }
+  .nav-links a:hover::after { right: 0; }
+
+  /* Hamburger */
+  .hamburger {
+    display: none; flex-direction: column; gap: 5px;
+    background: none; border: none; padding: 0; cursor: pointer;
+  }
+  .hamburger span {
+    display: block; width: 26px; height: 1px;
+    background: var(--white); transition: all 0.3s ease;
+  }
+
+  /* Mobile nav */
+  .mobile-nav {
+    display: none; position: fixed; inset: 0; background: var(--black);
+    z-index: 99; flex-direction: column; justify-content: center; align-items: center; gap: 2rem;
+  }
+  .mobile-nav.open { display: flex; }
+  .mobile-nav a {
+    font-family: var(--font-display);
+    font-size: 3rem; font-weight: 700;
+    color: var(--white); text-decoration: none; opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+  .mobile-nav.open a { opacity: 1; transform: translateY(0); }
+  .mobile-nav.open a:nth-child(1) { transition-delay: 0.1s; }
+  .mobile-nav.open a:nth-child(2) { transition-delay: 0.18s; }
+  .mobile-nav.open a:nth-child(3) { transition-delay: 0.26s; }
+  .mobile-nav.open a:nth-child(4) { transition-delay: 0.34s; }
+
+  /* Hero */
+  #home {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 0 4rem 5rem;
+    position: relative; overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: var(--black);
+  }
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(248,246,241,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(248,246,241,0.04) 1px, transparent 1px);
+    background-size: 80px 80px;
+  }
+  .hero-number {
+    position: absolute; top: 40%; right: 4rem;
+    font-family: var(--font-display);
+    font-size: min(22vw, 320px);
+    font-weight: 900; font-style: italic;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(248,246,241,0.08);
+    line-height: 1; user-select: none;
+    pointer-events: none;
+  }
+  .hero-content { position: relative; z-index: 2; }
+  .hero-tag {
+    font-family: var(--font-mono);
+    font-size: 0.7rem; letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gray-400);
+    margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .hero-tag::before {
+    content: ''; display: block;
+    width: 40px; height: 1px; background: var(--gray-600);
+  }
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: min(9vw, 120px);
+    font-weight: 900;
+    line-height: 0.92;
+    letter-spacing: -0.04em;
+    color: var(--white);
+    margin-bottom: 2rem;
+  }
+  .hero-title em {
+    font-style: italic;
+    -webkit-text-stroke: 1px var(--white);
+    color: transparent;
+  }
+  .hero-meta {
+    display: flex; align-items: center; gap: 3rem;
+  }
+  .hero-desc {
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    color: var(--gray-400);
+    max-width: 320px;
+    line-height: 1.8;
+  }
+  .hero-scroll {
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    font-family: var(--font-mono); font-size: 0.65rem;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--gray-600);
+  }
+  .scroll-line {
+    width: 1px; height: 60px; background: var(--gray-600);
+    animation: scrollAnim 2s ease-in-out infinite;
+  }
+  @keyframes scrollAnim {
+    0%, 100% { transform: scaleY(1); transform-origin: top; }
+    50% { transform: scaleY(0.3); transform-origin: top; }
+  }
+  .hero-cta {
+    display: inline-flex; align-items: center; gap: 1rem;
+    padding: 1rem 2rem;
+    border: 1px solid rgba(248,246,241,0.2);
+    color: var(--white);
+    text-decoration: none;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    position: relative; overflow: hidden;
+  }
+  .hero-cta::before {
+    content: ''; position: absolute;
+    inset: 0; background: var(--white);
+    transform: translateX(-101%);
+    transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .hero-cta:hover::before { transform: translateX(0); }
+  .hero-cta:hover { color: var(--black); }
+  .hero-cta span { position: relative; z-index: 1; }
+  .hero-arrow { position: relative; z-index: 1; font-size: 1.1rem; }
+
+  /* Section base */
+  section { padding: 8rem 4rem; }
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 0.68rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--gray-400);
+    display: flex; align-items: center; gap: 1rem;
+    margin-bottom: 4rem;
+  }
+  .section-label::after {
+    content: ''; flex: 1; max-width: 80px;
+    height: 1px; background: var(--gray-200);
+  }
+
+  /* About */
+  #about { background: var(--white); }
+  .about-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 6rem; align-items: start;
+  }
+  .about-left { position: sticky; top: 8rem; }
+  .about-portrait {
+    width: 100%; aspect-ratio: 3/4;
+    background: var(--black);
+    position: relative; overflow: hidden;
+  }
+  .portrait-placeholder {
+    width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 0.5rem;
+  }
+  .portrait-initial {
+    font-family: var(--font-display);
+    font-size: 8rem; font-weight: 900; font-style: italic;
+    color: rgba(248,246,241,0.12);
+    line-height: 1;
+  }
+  .portrait-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem; letter-spacing: 0.2em;
+    color: var(--gray-600); text-transform: uppercase;
+  }
+  .about-portrait::after {
+    content: ''; position: absolute;
+    bottom: 0; left: 0; right: 0; height: 2px;
+    background: var(--white);
+  }
+  .about-heading {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 5vw, 5rem);
+    font-weight: 900; line-height: 1.05;
+    letter-spacing: -0.03em;
+    margin-bottom: 2rem;
+  }
+  .about-heading em { font-style: italic; }
+  .about-body {
+    font-family: var(--font-sans);
+    font-size: 1rem; line-height: 1.9;
+    color: var(--gray-600);
+    margin-bottom: 2rem;
+  }
+  .about-skills {
+    display: flex; flex-wrap: wrap; gap: 0.6rem;
+    margin-top: 2rem;
+  }
+  .skill-tag {
+    font-family: var(--font-mono);
+    font-size: 0.65rem; letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--gray-200);
+    color: var(--gray-600);
+    transition: all 0.25s ease;
+  }
+  .skill-tag:hover {
+    background: var(--black); color: var(--white);
+    border-color: var(--black);
+  }
+  .about-stats {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 0; border-top: 1px solid var(--gray-100);
+    margin-top: 3rem;
+  }
+  .stat {
+    padding: 1.5rem 0;
+    border-right: 1px solid var(--gray-100);
+  }
+  .stat:last-child { border-right: none; }
+  .stat-num {
+    font-family: var(--font-display);
+    font-size: 2.5rem; font-weight: 900;
+    letter-spacing: -0.05em;
+    line-height: 1;
+  }
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: 0.62rem; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--gray-400);
+    margin-top: 0.3rem;
+  }
+
+  /* Work */
+  #work { background: var(--black); color: var(--white); }
+  #work .section-label { color: var(--gray-600); }
+  #work .section-label::after { background: var(--gray-600); }
+  .work-header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 5rem;
+  }
+  .work-title {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 7vw, 8rem);
+    font-weight: 900; line-height: 0.9;
+    letter-spacing: -0.04em;
+  }
+  .work-title em {
+    font-style: italic;
+    -webkit-text-stroke: 1px var(--white);
+    color: transparent;
+  }
+  .filter-tabs {
+    display: flex; gap: 0; border: 1px solid rgba(248,246,241,0.15);
+  }
+  .filter-btn {
+    font-family: var(--font-mono);
+    font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 0.75rem 1.5rem; border: none; cursor: pointer;
+    background: transparent; color: var(--gray-400);
+    transition: all 0.25s ease;
+    border-right: 1px solid rgba(248,246,241,0.15);
+  }
+  .filter-btn:last-child { border-right: none; }
+  .filter-btn.active, .filter-btn:hover {
+    background: var(--white); color: var(--black);
+  }
+
+  /* Grid */
+  .work-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5px;
+  }
+  .work-item {
+    aspect-ratio: 4/5;
+    background: var(--gray-600);
+    position: relative; overflow: hidden;
+    cursor: pointer;
+  }
+  .work-item.wide { grid-column: span 2; aspect-ratio: 8/5; }
+  .work-item.tall { grid-row: span 2; aspect-ratio: 2/5; }
+  .work-item-bg {
+    width: 100%; height: 100%;
+    background: var(--black);
+    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column;
+  }
+  .work-item:hover .work-item-bg { transform: scale(1.04); }
+  .work-item-pattern {
+    width: 100%; height: 100%;
+    position: absolute; inset: 0;
+    opacity: 0.08;
+  }
+  .work-item-info {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    justify-content: flex-end;
+    padding: 1.5rem;
+    background: linear-gradient(transparent 40%, rgba(0,0,0,0.85));
+    opacity: 0; transition: opacity 0.35s ease;
+  }
+  .work-item:hover .work-item-info { opacity: 1; }
+  .work-cat {
+    font-family: var(--font-mono);
+    font-size: 0.6rem; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--gray-400);
+    margin-bottom: 0.3rem;
+  }
+  .work-name {
+    font-family: var(--font-display);
+    font-size: 1.3rem; font-weight: 700;
+    color: var(--white); line-height: 1.2;
+  }
+  .work-item-num {
+    position: absolute; top: 1rem; right: 1rem;
+    font-family: var(--font-mono); font-size: 0.6rem;
+    color: rgba(248,246,241,0.25); letter-spacing: 0.1em;
+  }
+  /* Pattern fills */
+  .p1 { background: linear-gradient(135deg, #111 0%, #2a2a2a 100%); }
+  .p2 { background: linear-gradient(225deg, #0a0a0a 0%, #1e1e1e 60%, #111 100%); }
+  .p3 { background: repeating-linear-gradient(45deg, #111, #111 10px, #161616 10px, #161616 20px); }
+  .p4 { background: radial-gradient(ellipse at top left, #222 0%, #0a0a0a 70%); }
+  .p5 { background: repeating-linear-gradient(0deg, #0f0f0f, #0f0f0f 8px, #141414 8px, #141414 16px); }
+  .p6 { background: linear-gradient(to bottom, #181818 0%, #0a0a0a 100%); }
+  .work-label {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 5vw, 4rem);
+    font-weight: 900; font-style: italic;
+    color: rgba(248,246,241,0.06);
+    text-align: center; padding: 1rem;
+    user-select: none;
+  }
+
+  /* View all button */
+  .work-more {
+    display: flex; justify-content: center;
+    margin-top: 4rem;
+  }
+  .btn-outline {
+    font-family: var(--font-mono);
+    font-size: 0.72rem; letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 1rem 3rem;
+    border: 1px solid rgba(248,246,241,0.2);
+    color: var(--white); text-decoration: none;
+    position: relative; overflow: hidden;
+    transition: color 0.3s ease;
+  }
+  .btn-outline::before {
+    content: ''; position: absolute;
+    inset: 0; background: var(--white);
+    transform: translateX(-101%);
+    transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .btn-outline:hover::before { transform: translateX(0); }
+  .btn-outline:hover { color: var(--black); }
+  .btn-outline span { position: relative; z-index: 1; }
+
+  /* Gallery page */
+  #gallery { background: var(--white); display: none; }
+  #gallery.active { display: block; }
+  .gallery-header {
+    margin-bottom: 4rem;
+  }
+  .gallery-title {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 8vw, 9rem);
+    font-weight: 900; line-height: 0.88;
+    letter-spacing: -0.04em;
+  }
+  .gallery-title em { font-style: italic; }
+  .gallery-masonry {
+    columns: 3; column-gap: 1.5px;
+  }
+  .gallery-item {
+    break-inside: avoid;
+    margin-bottom: 1.5px;
+    cursor: pointer; overflow: hidden;
+    position: relative;
+  }
+  .gallery-item-inner {
+    aspect-ratio: var(--r, 1);
+    width: 100%;
+    transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .gallery-item:hover .gallery-item-inner { transform: scale(1.03); }
+  .gallery-overlay {
+    position: absolute; inset: 0;
+    background: rgba(10,10,10,0.7);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity 0.3s ease;
+  }
+  .gallery-item:hover .gallery-overlay { opacity: 1; }
+  .gallery-overlay-text {
+    font-family: var(--font-mono); font-size: 0.65rem;
+    letter-spacing: 0.15em; text-transform: uppercase; color: var(--white);
+  }
+
+  /* Contact */
+  #contact { background: var(--black); color: var(--white); }
+  #contact .section-label { color: var(--gray-600); }
+  #contact .section-label::after { background: var(--gray-600); }
+  .contact-layout {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8rem;
+  }
+  .contact-title {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 6vw, 7rem);
+    font-weight: 900; line-height: 0.9;
+    letter-spacing: -0.04em;
+    margin-bottom: 2rem;
+  }
+  .contact-title em { font-style: italic; color: transparent; -webkit-text-stroke: 1px var(--white); }
+  .contact-desc {
+    font-size: 0.9rem; line-height: 1.9;
+    color: var(--gray-400); max-width: 380px;
+  }
+  .contact-links {
+    margin-top: 3rem; display: flex; flex-direction: column; gap: 1rem;
+  }
+  .contact-link {
+    font-family: var(--font-mono);
+    font-size: 0.72rem; letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gray-400); text-decoration: none;
+    display: flex; align-items: center; gap: 1rem;
+    transition: color 0.25s ease;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(248,246,241,0.07);
+  }
+  .contact-link:hover { color: var(--white); }
+  .contact-link-icon { font-size: 1rem; }
+  .contact-form { display: flex; flex-direction: column; gap: 0; }
+  .form-group { position: relative; margin-bottom: 0; }
+  .form-group + .form-group { border-top: 1px solid rgba(248,246,241,0.07); }
+  .form-label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gray-600);
+    display: block; margin-bottom: 0.5rem;
+    padding-top: 1.5rem;
+  }
+  .form-input, .form-textarea {
+    width: 100%; background: transparent;
+    border: none; outline: none;
+    font-family: var(--font-sans);
+    font-size: 1rem; color: var(--white);
+    padding: 0 0 1.5rem;
+    resize: none;
+  }
+  .form-input::placeholder, .form-textarea::placeholder { color: var(--gray-600); }
+  .form-textarea { min-height: 100px; }
+  .form-border {
+    height: 1px; background: rgba(248,246,241,0.07);
+    position: relative; overflow: hidden;
+  }
+  .form-border::after {
+    content: ''; position: absolute;
+    top: 0; left: -100%; right: 100%; height: 100%;
+    background: var(--white);
+    transition: left 0.4s ease, right 0.4s ease;
+  }
+  .form-group:focus-within .form-border::after { left: 0; right: 0; }
+  .submit-btn {
+    margin-top: 2.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 1.1rem 2.5rem; background: var(--white); color: var(--black);
+    border: none; cursor: pointer;
+    position: relative; overflow: hidden;
+    transition: color 0.3s ease;
+    align-self: flex-start;
+  }
+  .submit-btn::before {
+    content: ''; position: absolute;
+    inset: 0; background: var(--black);
+    transform: scaleX(0); transform-origin: right;
+    transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .submit-btn:hover::before { transform: scaleX(1); transform-origin: left; }
+  .submit-btn:hover { color: var(--white); border: 1px solid var(--white); }
+  .submit-btn span { position: relative; z-index: 1; }
+
+  /* Footer */
+  footer {
+    background: var(--black); color: var(--gray-600);
+    border-top: 1px solid rgba(248,246,241,0.06);
+    padding: 2rem 4rem;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  footer p { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; }
+
+  /* Marquee */
+  .marquee-wrap {
+    overflow: hidden; background: var(--white);
+    border-top: 1px solid var(--gray-100);
+    border-bottom: 1px solid var(--gray-100);
+    padding: 1.2rem 0;
+  }
+  .marquee-track {
+    display: flex; gap: 4rem;
+    animation: marquee 18s linear infinite;
+    white-space: nowrap;
+  }
+  .marquee-item {
+    font-family: var(--font-display);
+    font-size: 1.2rem; font-weight: 400; font-style: italic;
+    color: var(--gray-200); flex-shrink: 0;
+    display: flex; align-items: center; gap: 4rem;
+  }
+  .marquee-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--gray-200); }
+  @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+  /* Reveal animation */
+  .reveal {
+    opacity: 0; transform: translateY(40px);
+    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+
+  /* Lightbox */
+  .lightbox {
+    position: fixed; inset: 0; z-index: 200;
+    background: rgba(0,0,0,0.95);
+    display: none; align-items: center; justify-content: center;
+  }
+  .lightbox.open { display: flex; }
+  .lightbox-inner {
+    max-width: 85vw; max-height: 90vh;
+    position: relative;
+  }
+  .lightbox-img {
+    max-width: 100%; max-height: 90vh;
+    object-fit: contain;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .lightbox-close {
+    position: absolute; top: -3rem; right: 0;
+    font-family: var(--font-mono); font-size: 0.7rem;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--gray-400); cursor: pointer; background: none; border: none;
+    transition: color 0.2s ease;
+  }
+  .lightbox-close:hover { color: var(--white); }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    nav { padding: 1.5rem 2rem; }
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    #home { padding: 0 2rem 4rem; }
+    section { padding: 5rem 2rem; }
+    .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .about-left { position: static; }
+    .work-grid { grid-template-columns: 1fr 1fr; }
+    .work-item.wide { grid-column: span 2; }
+    .work-item.tall { grid-row: span 1; aspect-ratio: 4/5; }
+    .contact-layout { grid-template-columns: 1fr; gap: 3rem; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+    .gallery-masonry { columns: 2; }
+    .hero-title { font-size: clamp(3rem, 15vw, 7rem); }
+    .hero-meta { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
+  }
+  @media (max-width: 540px) {
+    .work-grid { grid-template-columns: 1fr; }
+    .work-item.wide { grid-column: span 1; aspect-ratio: 4/5; }
+    .gallery-masonry { columns: 1; }
+    .filter-tabs { flex-wrap: wrap; }
+    .about-stats { grid-template-columns: 1fr 1fr; }
+    .stat:nth-child(2) { border-right: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav>
+  <a href="#home" class="nav-logo" onclick="showSection('home')">Y.</a>
+  <ul class="nav-links">
+    <li><a href="#home" onclick="showSection('home')">Home</a></li>
+    <li><a href="#about" onclick="showSection('home')">About</a></li>
+    <li><a href="#work" onclick="showSection('home')">Work</a></li>
+    <li><a href="#gallery" onclick="showSection('gallery')">Gallery</a></li>
+    <li><a href="#contact" onclick="showSection('home')">Contact</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile Nav -->
+<div class="mobile-nav" id="mobileNav">
+  <a href="#home" onclick="closeMobileNav(); showSection('home')">Home</a>
+  <a href="#about" onclick="closeMobileNav(); showSection('home')">About</a>
+  <a href="#work" onclick="closeMobileNav(); showSection('home')">Work</a>
+  <a href="#gallery" onclick="closeMobileNav(); showSection('gallery')">Gallery</a>
+  <a href="#contact" onclick="closeMobileNav(); showSection('home')">Contact</a>
+</div>
+
+<!-- Main Site -->
+<div id="mainSite">
+
+  <!-- Hero -->
+  <section id="home">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-number">Y</div>
+    <div class="hero-content">
+      <div class="hero-tag">Available for freelance &amp; collaboration</div>
+      <h1 class="hero-title">Yugesh<br><em>Creates.</em></h1>
+      <div class="hero-meta">
+        <p class="hero-desc">Graphic Designer, Photographer &amp; UI/UX Designer crafting intentional visual experiences from Tamilnadu, India.</p>
+        <a href="#work" class="hero-cta" onclick="showSection('home'); setTimeout(()=>{document.getElementById('work').scrollIntoView({behavior:'smooth'})},50)">
+          <span>View Work</span>
+          <span class="hero-arrow">→</span>
+        </a>
+        <div class="hero-scroll">
+          <div class="scroll-line"></div>
+          <span>Scroll</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Marquee -->
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <span class="marquee-item">Graphic Design <span class="marquee-dot"></span></span>
+      <span class="marquee-item">Photography <span class="marquee-dot"></span></span>
+      <span class="marquee-item">UI / UX Design <span class="marquee-dot"></span></span>
+      <span class="marquee-item">Brand Identity <span class="marquee-dot"></span></span>
+      <span class="marquee-item">Visual Storytelling <span class="marquee-dot"></span></span>
+      <span class="marquee-item">Product Design <span class="marquee-dot"></span></span>
+      <span class="marquee-item">Editorial <span class="marquee-dot"></span></span>
+      <span class="marquee-item">Graphic Design <span class="marquee-dot"></span></span>
+      <span class="marquee-item">Photography <span class="marquee-dot"></span></span>
+      <span class="marquee-item">UI / UX Design <span class="marquee-dot"></span></span>
+      <span class="marquee-item">Brand Identity <span class="marquee-dot"></span></span>
+      <span class="marquee-item">Visual Storytelling <span class="marquee-dot"></span></span>
+      <span class="marquee-item">Product Design <span class="marquee-dot"></span></span>
+      <span class="marquee-item">Editorial <span class="marquee-dot"></span></span>
+    </div>
+  </div>
+
+  <!-- About -->
+  <section id="about">
+    <div class="section-label reveal">01 — About</div>
+    <div class="about-grid">
+      <div class="about-left reveal">
+        <div class="about-portrait">
+          <div class="portrait-placeholder">
+            <div class="portrait-initial">Y</div>
+            <div class="portrait-label">Yugesh · Tamilnadu</div>
+          </div>
+        </div>
+      </div>
+      <div class="about-right">
+        <h2 class="about-heading reveal">I design with<br><em>intention.</em></h2>
+        <p class="about-body reveal reveal-delay-1">
+          I'm Yugesh, a multi-disciplinary creative based in Tamilnadu, India. I work at the intersection of graphic design, photography, and digital product design — finding the quiet tension between form and function.
+        </p>
+        <p class="about-body reveal reveal-delay-2">
+          My work is rooted in simplicity — I believe the most powerful designs know what to leave out. Whether I'm building a brand identity, shooting a portrait series, or wireframing a product interface, I bring the same deliberate eye.
+        </p>
+        <p class="about-body reveal reveal-delay-3">
+          Currently open to freelance projects and full-time opportunities. Let's make something that lasts.
+        </p>
+        <div class="about-skills reveal reveal-delay-1">
+          <span class="skill-tag">Branding</span>
+          <span class="skill-tag">Typography</span>
+          <span class="skill-tag">Editorial Design</span>
+          <span class="skill-tag">Portrait Photography</span>
+          <span class="skill-tag">Product Design</span>
+          <span class="skill-tag">Figma</span>
+          <span class="skill-tag">Prototyping</span>
+          <span class="skill-tag">Adobe Suite</span>
+          <span class="skill-tag">Motion</span>
+          <span class="skill-tag">User Research</span>
+        </div>
+        <div class="about-stats reveal reveal-delay-2">
+          <div class="stat">
+            <div class="stat-num">3+</div>
+            <div class="stat-label">Years exp.</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">50+</div>
+            <div class="stat-label">Projects</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num">20</div>
+            <div class="stat-label">Clients</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Work -->
+  <section id="work">
+    <div class="section-label reveal">02 — Selected Work</div>
+    <div class="work-header">
+      <h2 class="work-title reveal">Selected<br><em>Work.</em></h2>
+      <div class="filter-tabs reveal reveal-delay-1">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="design">Design</button>
+        <button class="filter-btn" data-filter="photo">Photo</button>
+        <button class="filter-btn" data-filter="ux">UI/UX</button>
+      </div>
+    </div>
+    
+    <div class="work-grid reveal reveal-delay-1" id="workGrid">
+      <div class="work-item wide" data-cat="design">
+        <div class="work-item-bg p1"><div class="work-label">Brand</div></div>
+        <div class="work-item-num">01</div>
+        <div class="work-item-info">
+          <div class="work-cat">Graphic Design</div>
+          <div class="work-name">Noir Brand Identity</div>
+        </div>
+      </div>
+      <div class="work-item" data-cat="ux">
+        <div class="work-item-bg p2"><div class="work-label">UX</div></div>
+        <div class="work-item-num">02</div>
+        <div class="work-item-info">
+          <div class="work-cat">UI / UX Design</div>
+          <div class="work-name">Finance App Redesign</div>
+        </div>
+      </div>
+      <div class="work-item" data-cat="photo">
+        <div class="work-item-bg p3"><div class="work-label">Foto</div></div>
+        <div class="work-item-num">03</div>
+        <div class="work-item-info">
+          <div class="work-cat">Photography</div>
+          <div class="work-name">Urban Shadows Series</div>
+        </div>
+      </div>
+      <div class="work-item" data-cat="ux">
+        <div class="work-item-bg p4"><div class="work-label">UI</div></div>
+        <div class="work-item-num">04</div>
+        <div class="work-item-info">
+          <div class="work-cat">UI / UX Design</div>
+          <div class="work-name">E-Commerce Platform</div>
+        </div>
+      </div>
+      <div class="work-item" data-cat="design">
+        <div class="work-item-bg p5"><div class="work-label">Type</div></div>
+        <div class="work-item-num">05</div>
+        <div class="work-item-info">
+          <div class="work-cat">Graphic Design</div>
+          <div class="work-name">Editorial — Type Study</div>
+        </div>
+      </div>
+      <div class="work-item" data-cat="photo">
+        <div class="work-item-bg p6"><div class="work-label">Light</div></div>
+        <div class="work-item-num">06</div>
+        <div class="work-item-info">
+          <div class="work-cat">Photography</div>
+          <div class="work-name">Light &amp; Form</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="work-more reveal reveal-delay-2">
+      <a href="#gallery" class="btn-outline" onclick="showSection('gallery')"><span>View Full Gallery →</span></a>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact">
+    <div class="section-label reveal">03 — Contact</div>
+    <div class="contact-layout">
+      <div>
+        <h2 class="contact-title reveal">Let's<br>Make<br><em>It.</em></h2>
+        <p class="contact-desc reveal reveal-delay-1">Have a project in mind? I'd love to hear about it. Drop me a message and let's create something extraordinary together.</p>
+        <div class="contact-links reveal reveal-delay-2">
+          <a href="mailto:yugesh.d2202@gmail.com" class="contact-link">
+            <span class="contact-link-icon">✉</span>
+            yugesh.d2202@gmail.com
+          </a>
+          <a href="tel:+919342092971" class="contact-link">
+             <span class="contact-link-icon">☎</span>
+             +91 9342092971
+          </a>
+          <a href="https://www.linkedin.com/in/yugesh-d2202" class="contact-link">
+            <span class="contact-link-icon">in</span>
+            yugesh D
+          </a>
+          <a href="https://www.instagram.com/_yugez._._/?hl=en" class="contact-link">
+            <span class="contact-link-icon">ig</span>
+            @_yugez._._
+          </a>
+        </div>
+      </div>
+      <div class="reveal reveal-delay-1">
+        <form class="contact-form" onsubmit="handleSubmit(event)">
+          <div class="form-group">
+            <label class="form-label">Your Name</label>
+            <input type="text" class="form-input" placeholder="MS Dhoni" required>
+            <div class="form-border"></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" class="form-input" placeholder="hello@you.com" required>
+            <div class="form-border"></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Project Type</label>
+            <input type="text" class="form-input" placeholder="Brand Identity / UI Design / Photography">
+            <div class="form-border"></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tell Me About It</label>
+            <textarea class="form-textarea" placeholder="Describe your project, timeline, and budget..."></textarea>
+            <div class="form-border"></div>
+          </div>
+          <button type="submit" class="submit-btn"><span>Send Message →</span></button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 Yugesh — All rights reserved</p>
+    <p>Designed &amp; Built with precision</p>
+    <p>Tamilnadu, India 🇮🇳</p>
+  </footer>
+
+</div>
+
+<!-- Gallery Page -->
+<div id="galleryPage" style="display:none; padding-top: 6rem;">
+  <section id="gallery" style="display:block;">
+    <div class="section-label">All Work</div>
+    <div class="gallery-header">
+      <h1 class="gallery-title">Every<br>Frame<br><em>Counts.</em></h1>
+    </div>
+
+    <!-- Filter tabs for gallery -->
+    <div style="display:flex; gap:0; border:1px solid var(--gray-100); margin-bottom:3rem; width:fit-content;">
+      <button class="filter-btn active" style="color:var(--gray-600); border-color:var(--gray-100);" data-gfilter="all" onclick="filterGallery('all',this)">All</button>
+      <button class="filter-btn" style="color:var(--gray-600); border-color:var(--gray-100);" data-gfilter="design" onclick="filterGallery('design',this)">Design</button>
+      <button class="filter-btn" style="color:var(--gray-600); border-color:var(--gray-100);" data-gfilter="photo" onclick="filterGallery('photo',this)">Photography</button>
+      <button class="filter-btn" style="color:var(--gray-600); border-color:var(--gray-100);" data-gfilter="ux" onclick="filterGallery('ux',this)">UI / UX</button>
+    </div>
+
+    <div class="gallery-masonry" id="galleryGrid">
+      <!-- Items injected by JS -->
+    </div>
+  </section>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <div class="lightbox-inner" onclick="event.stopPropagation()">
+    <button class="lightbox-close" onclick="closeLightbox()">Close ✕</button>
+    <div class="lightbox-img" id="lightboxContent"></div>
+  </div>
+</div>
+
+<script>
+  /* ============================================================
+     IMAGE CONFIGURATION — CHANGE YOUR IMAGES HERE
+     ============================================================
+     Replace the placeholder values with your actual image paths
+     or full URLs (e.g. './images/profile.jpg' or 'https://...')
+
+     PROFILE PHOTO
+     - Shown in the About section portrait box
+  ============================================================ */
+  const IMAGES = {
+
+    /* --- PROFILE / ABOUT PHOTO --- */
+    profile: 'file:///C:/Users/YUGEZ%20D/Downloads/WhatsApp%20Image%202026-05-19%20at%202.57.45%20PM.jpeg',
+    /* Example: profile: './images/profile.jpg' */
+
+    /* --- HERO BACKGROUND --- */
+    heroBg: '',
+    /* Example: heroBg: './images/hero-bg.jpg'
+       Leave empty ('') to keep the default dark grid pattern */
+
+    /* --- WORK SECTION ITEMS (6 cards on home page) ---
+       Each has: image (URL/path), cat (design|photo|ux),
+       title (display name), wide: true makes it span 2 columns */
+    workItems: [
+      { image: 'file:///C:/Users/YUGEZ%20D/Downloads/1779183188165.jpg',cat: 'design', title: 'Laveon Moments Logo', wide: true  },
+      { image: 'file:///C:/Users/YUGEZ%20D/Downloads/1779183188138.jpg', cat: 'design',     title: 'Laveon Moments FLyer design',   wide: false },
+            { image: 'file:///C:/Users/YUGEZ%20D/Downloads/1779183188151.jpg', cat: 'design',     title: 'E-Commerce Platform',    wide: false },
+      { image: 'file:///C:/Users/YUGEZ%20D/Downloads/1779183188117.jpg', cat: 'design',  title: 'Poster design for the wholesaler',   wide: true },
+      { image: 'file:///D:/Creative/Events/Puberty%20Sabitha/selected/IMG_9300.JPG', cat: 'photo', title: 'Puberty Ceremony', wide: false },
+      { image: '', cat: 'photo',  title: 'Light & Form',           wide: false },
+      { image: '', cat: 'design', title: 'Editorial — Type Study', wide: false },
+      { image: '', cat: 'design', title: 'Noir Brand Identity',    wide: true  },
+    ],
+
+    /* --- GALLERY PAGE ITEMS (all work, masonry grid) ---
+       Each has: image, cat (design|photo|ux), title, ratio (CSS aspect-ratio)
+       ratio examples: '3/4'  '2/3'  '1/1'  '4/3'  '16/9'  '9/16' */
+    galleryItems: [
+      { image: 'file:///C:/Users/YUGEZ%20D/Downloads/ZiqSPX0su59cl27vbJTgP09_yzp9rjApKv2iyHmg7wo_kcbRAkxVFFZ-2qImGHx9_uFvgq4fwPINXf58zYefc2Qo3lmGoWnmGGPlvQYYUWBpWzmC6l7Aek0SRxifG7DVTQYQWJUdzpni470dC9shzdzCJMRhVqOzyIELvOGR0QbL2tBZrARLJnkVMQ6a1vAN.jpg', cat: 'design', title: 'Noir Identity',       ratio: '3/4'  },
+      { image: '', cat: 'photo',  title: 'City Shadows',        ratio: '2/3'  },
+      { image: '', cat: 'ux',     title: 'Finance App',         ratio: '4/5'  },
+      { image: '', cat: 'design', title: 'Event Poster',        ratio: '3/4'  },
+      { image: '', cat: 'photo',  title: 'Studio Session',      ratio: '3/4'  },
+      { image: '', cat: 'ux',     title: 'Landing Page',        ratio: '4/3'  },
+      { image: '', cat: 'design', title: 'Type Exploration',    ratio: '1/1'  },
+      { image: '', cat: 'photo',  title: 'Architecture',        ratio: '2/3'  },
+      { image: '', cat: 'ux',     title: 'Analytics UI',        ratio: '4/3'  },
+      { image: '', cat: 'design', title: 'Startup Branding',    ratio: '3/4'  },
+      { image: '', cat: 'photo',  title: 'Night Walk',          ratio: '2/3'  },
+      { image: '', cat: 'ux',     title: 'Health Tracker',      ratio: '9/16' },
+    ],
+  };
+  /* ============================================================
+     END OF IMAGE CONFIGURATION
+  ============================================================ */
+
+
+  /* --- Apply profile image --- */
+  (function applyProfile() {
+    const portrait = document.querySelector('.about-portrait');
+    if (IMAGES.profile) {
+      portrait.style.backgroundImage = `url('${IMAGES.profile}')`;
+      portrait.style.backgroundSize = 'cover';
+      portrait.style.backgroundPosition = 'center';
+      portrait.querySelector('.portrait-placeholder').style.display = 'none';
+    }
+  })();
+
+  /* --- Apply hero background --- */
+  (function applyHeroBg() {
+    if (IMAGES.heroBg) {
+      const bg = document.querySelector('.hero-bg');
+      bg.style.backgroundImage = `url('${IMAGES.heroBg}')`;
+      bg.style.backgroundSize = 'cover';
+      bg.style.backgroundPosition = 'center';
+      bg.style.opacity = '0.5';
+    }
+  })();
+
+  /* --- Build Work grid from config --- */
+  (function buildWorkGrid() {
+    const patterns = ['p1','p2','p3','p4','p5','p6'];
+    const catLabels = { design: 'Graphic Design', photo: 'Photography', ux: 'UI / UX Design' };
+    const grid = document.getElementById('workGrid');
+    grid.innerHTML = '';
+    IMAGES.workItems.forEach((item, i) => {
+      const div = document.createElement('div');
+      div.className = 'work-item' + (item.wide ? ' wide' : '');
+      div.dataset.cat = item.cat;
+      const numStr = String(i + 1).padStart(2, '0');
+      if (item.image) {
+        div.innerHTML = `
+          <div class="work-item-bg" style="background-image:url('${item.image}');background-size:cover;background-position:center;"></div>
+          <div class="work-item-num">${numStr}</div>
+          <div class="work-item-info">
+            <div class="work-cat">${catLabels[item.cat]}</div>
+            <div class="work-name">${item.title}</div>
+          </div>`;
+      } else {
+        const pat = patterns[i % patterns.length];
+        const label = item.cat === 'design' ? 'Brand' : item.cat === 'photo' ? 'Foto' : 'UX';
+        div.innerHTML = `
+          <div class="work-item-bg ${pat}"><div class="work-label">${label}</div></div>
+          <div class="work-item-num">${numStr}</div>
+          <div class="work-item-info">
+            <div class="work-cat">${catLabels[item.cat]}</div>
+            <div class="work-name">${item.title}</div>
+          </div>`;
+      }
+      grid.appendChild(div);
+    });
+    /* re-attach filter listeners after rebuild */
+    attachWorkFilter();
+  })();
+
+  /* --- Work filter --- */
+  function attachWorkFilter() {
+    document.querySelectorAll('.filter-btn[data-filter]').forEach(btn => {
+      btn.onclick = function() {
+        document.querySelectorAll('.filter-btn[data-filter]').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        const f = this.dataset.filter;
+        document.querySelectorAll('.work-item').forEach(item => {
+          const show = f === 'all' || item.dataset.cat === f;
+          item.style.opacity = show ? '1' : '0.2';
+          item.style.transform = show ? 'scale(1)' : 'scale(0.96)';
+          item.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+        });
+      };
+    });
+  }
+  attachWorkFilter();
+
+  /* --- Build Gallery from config --- */
+  function buildGallery() {
+    const grid = document.getElementById('galleryGrid');
+    if (grid.dataset.built) return;
+    grid.dataset.built = '1';
+    const patterns = ['p1','p2','p3','p4','p5','p6'];
+    const catLabels = { design: 'Design', photo: 'Photography', ux: 'UI / UX' };
+    IMAGES.galleryItems.forEach((item, i) => {
+      const div = document.createElement('div');
+      div.className = 'gallery-item';
+      div.dataset.cat = item.cat;
+      const pat = patterns[i % patterns.length];
+      const label = item.cat === 'design' ? 'Brand' : item.cat === 'photo' ? 'Foto' : 'UX';
+      if (item.image) {
+        div.innerHTML = `
+          <div class="gallery-item-inner" style="--r:${item.ratio};background-image:url('${item.image}');background-size:cover;background-position:center;"></div>
+          <div class="gallery-overlay">
+            <div style="text-align:center;">
+              <div class="gallery-overlay-text">${item.title}</div>
+              <div style="font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(248,246,241,0.45);margin-top:0.3rem;">${catLabels[item.cat]}</div>
+            </div>
+          </div>`;
+      } else {
+        div.innerHTML = `
+          <div class="gallery-item-inner ${pat}" style="--r:${item.ratio};background-color:#111;display:flex;align-items:center;justify-content:center;">
+            <div style="font-family:'Playfair Display',serif;font-size:clamp(1.5rem,4vw,3.5rem);font-weight:900;font-style:italic;color:rgba(248,246,241,0.07);user-select:none;">${label}</div>
+          </div>
+          <div class="gallery-overlay">
+            <div style="text-align:center;">
+              <div class="gallery-overlay-text">${item.title}</div>
+              <div style="font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(248,246,241,0.45);margin-top:0.3rem;">${catLabels[item.cat]}</div>
+            </div>
+          </div>`;
+      }
+      div.addEventListener('click', () => openLightbox(item, i));
+      grid.appendChild(div);
+    });
+  }
+
+  function filterGallery(filter, btn) {
+    document.querySelectorAll('[data-gfilter]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.gallery-item').forEach(item => {
+      item.style.opacity = (filter === 'all' || item.dataset.cat === filter) ? '1' : '0.15';
+      item.style.transition = 'opacity 0.4s ease';
+    });
+  }
+
+  /* --- Hamburger --- */
+  const ham = document.getElementById('hamburger');
+  const mobileNav = document.getElementById('mobileNav');
+  ham.addEventListener('click', () => mobileNav.classList.toggle('open'));
+  function closeMobileNav() { mobileNav.classList.remove('open'); }
+
+  /* --- Section toggle --- */
+  function showSection(which) {
+    const main = document.getElementById('mainSite');
+    const gallery = document.getElementById('galleryPage');
+    if (which === 'gallery') {
+      main.style.display = 'none';
+      gallery.style.display = 'block';
+      buildGallery();
+      window.scrollTo(0, 0);
+    } else {
+      main.style.display = 'block';
+      gallery.style.display = 'none';
+    }
+  }
+
+  /* --- Scroll reveal --- */
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  reveals.forEach(r => obs.observe(r));
+
+  /* --- Lightbox --- */
+  function openLightbox(item, i) {
+    const lb = document.getElementById('lightbox');
+    const content = document.getElementById('lightboxContent');
+    const catLabels = { design: 'Graphic Design', photo: 'Photography', ux: 'UI / UX Design' };
+    const patterns = ['p1','p2','p3','p4','p5','p6'];
+    const pat = patterns[i % patterns.length];
+    const label = item.cat === 'design' ? 'Brand' : item.cat === 'photo' ? 'Foto' : 'UX';
+    if (item.image) {
+      content.innerHTML = `<img src="${item.image}" style="max-width:80vw;max-height:80vh;object-fit:contain;display:block;">
+        <div style="margin-top:1rem;text-align:center;">
+          <div style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--white);">${item.title}</div>
+          <div style="font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gray-400);margin-top:0.3rem;">${catLabels[item.cat]}</div>
+        </div>`;
+    } else {
+      content.innerHTML = `
+        <div class="${pat}" style="width:60vw;height:60vh;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1rem;">
+          <div style="font-family:'Playfair Display',serif;font-size:clamp(3rem,8vw,7rem);font-weight:900;font-style:italic;color:rgba(248,246,241,0.1);">${label}</div>
+          <div style="font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;color:var(--white);">${item.title}</div>
+          <div style="font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gray-400);">${catLabels[item.cat]}</div>
+        </div>`;
+    }
+    lb.classList.add('open');
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+ /* --- Contact form — saves to admin dashboard via localStorage --- */
+  function handleSubmit(e) {
+    e.preventDefault();
+    const form   = e.target;
+    const inputs = form.querySelectorAll('.form-input');
+    const data   = {
+      id:          Date.now().toString(),
+      name:        inputs[0]?.value || '',
+      email:       inputs[1]?.value || '',
+      projectType: inputs[2]?.value || '',
+      message:     form.querySelector('.form-textarea')?.value || '',
+      date:        new Date().toISOString(),
+      status:      'unread',
+    };
+    try {
+      const key  = 'yugesh_messages';
+      const msgs = JSON.parse(localStorage.getItem(key) || '[]');
+      msgs.push(data);
+      localStorage.setItem(key, JSON.stringify(msgs));
+    } catch(err) { console.warn('Could not save message:', err); }
+
+    const btn = form.querySelector('.submit-btn span');
+    btn.textContent = 'Sent! ✓';
+    setTimeout(() => { btn.textContent = 'Send Message →'; }, 3000);
+    form.reset();
+  }
+
+  /* --- Smooth scroll --- */
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', function(e) {
+      const id = this.getAttribute('href').slice(1);
+      const el = document.getElementById(id);
+      if (el && id !== 'gallery') {
+        e.preventDefault();
+        setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }), 50);
+      }
+    });
+  });
+</script>
+</body>
+</html>
